@@ -6,3 +6,7 @@ This plugin depends on [denops.vim](https://github.com/vim-denops/denops.vim) an
 
 - `:HttpFileProtocolServerStart`
 - Access `http://localhost:11111/file/path/to/file:lnum:col`
+
+## URL Format
+
+`http://localhost:{port}/file/{path/to/file}:{line}:{column}?command={open_command}`
