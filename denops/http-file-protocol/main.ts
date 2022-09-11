@@ -1,5 +1,6 @@
-import type { Denops } from "https://deno.land/x/denops_std@v3.8.1/mod.ts";
-import { execute } from "https://deno.land/x/denops_std@v3.8.1/helper/mod.ts";
+import type { Denops } from "https://deno.land/x/denops_std@v3.8.2/mod.ts";
+import { execute } from "https://deno.land/x/denops_std@v3.8.2/helper/mod.ts";
+import * as autocmd from "https://deno.land/x/denops_std@v3.8.2/autocmd/mod.ts";
 import { Server } from "https://deno.land/std@0.154.0/http/server.ts";
 import { unnullish } from "https://deno.land/x/unnullish@v0.2.0/mod.ts";
 import * as queryString from "https://deno.land/x/querystring@v1.0.2/mod.js";
@@ -46,6 +47,10 @@ export const main = async (denops: Denops): Promise<void> => {
   denops.dispatcher = {
     // deno-lint-ignore require-await
     start: async (p: unknown): Promise<void> => {
+      if (server) {
+        return;
+      }
+
       const port = unnullish(p, (v) => parseInt(v as string, 10)) ?? PORT;
 
       server = new Server({ handler, port });
@@ -62,6 +67,8 @@ export const main = async (denops: Denops): Promise<void> => {
       }
     },
   };
+
+  autocmd.define(denops, "VimLeavePre", "*", "HttpFileProtocolServerStop");
 
   return await Promise.resolve();
 };
