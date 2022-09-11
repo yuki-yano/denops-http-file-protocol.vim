@@ -21,9 +21,15 @@ export const main = async (denops: Denops): Promise<void> => {
     );
     if (isReadable) {
       await denops.cmd(`${command ?? "edit"} file://${filePath}`);
-      return new Response("OK", { status: 200 });
+      return new Response("OK", {
+        status: 200,
+        headers: { "Access-Control-Allow-Origin": "*" },
+      });
     } else {
-      return new Response("Not Found", { status: 404 });
+      return new Response("Not Found", {
+        status: 404,
+        headers: { "Access-Control-Allow-Origin": "*" },
+      });
     }
   };
 
